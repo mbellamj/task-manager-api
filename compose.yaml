@@ -1,0 +1,50 @@
+
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - 3001:3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      API_DEVTOOL_PORT: 3011
+      JWT_SECRET: mySuperUserSecretKey
+      JWT_EXPIRE_IN: 1h
+      DATABASE_HOSTNAME: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: usergood
+      DATABASE_PASSWORD: passgood
+      DATABASE_NAME: task-manager-db
+      DATABASE_USE_SSL: false
+    networks:
+      - backend_network
+
+  postgres:
+    image: postgres:17.0-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: usergood
+      POSTGRES_PASSWORD: passgood
+      POSTGRES_DB: task-manager-db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend_network
+
+volumes:
+  database:
+  cache:
+
+networks:
+  backend_network:
+    driver: bridge
+
