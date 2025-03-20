@@ -90,5 +90,3 @@ The use of additional libraries and/or technologies is welcome.
 - Use of a Github repository
 - Use of regular commits on specific branches
 - The version analyzed will be the latest available commit.
-
-Send an email to jean-michel.lied@saegus.com if you have any questions about the test.
